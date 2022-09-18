@@ -72,4 +72,37 @@ module.exports = class UserController {
         }
     }
 
+    static async login(req, res) {
+
+        const {email, password} = req.body
+
+        //Validações
+        if(!email) {
+            res.status(422).json({ message: "Você não digitou um email" })
+        }
+
+        if(!password) {
+            res.status(422).json({ message: "Você não digitou a senha" })
+        }
+
+        //Checar se o usuário existe
+        const user = await User.findOne({email: email})
+
+        if(!user) {
+            res.status(422).json({ message: 'Usuário não cadastrado' })
+            return
+        }
+
+        //Checar se a senha digitada é a mesma cadastrada no banco de dados
+        const ckeckPassword = await bcrypt.compare(password, user.password)
+
+        if(!ckeckPassword) {
+            res.status(422).json({ message: 'A senha está incorreta' })
+            return
+        }
+
+        await createUserToken(user, req, res)
+
+    }
+
 }
