@@ -105,4 +105,22 @@ module.exports = class UserController {
 
     }
 
+    //Função para capturar o usuário que está utilizando o sistema pelo token
+    static async checkUser(req, res) {
+
+        let currentUser
+
+        console.log(req.headers.authorization)
+
+        //Local onde fica o token
+        if(req.headers.authorization) {
+
+        } else {
+            currentUser = null 
+        }
+
+        res.status(200).send(currentUser)
+
+    }
+
 }
