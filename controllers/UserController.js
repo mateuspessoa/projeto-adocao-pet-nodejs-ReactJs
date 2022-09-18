@@ -1,6 +1,10 @@
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
+//Helpers
 const createUserToken = require('../helpers/create-user-token')
+const getToken = require('../helpers/get-token')
 
 module.exports = class UserController {
 
@@ -110,10 +114,17 @@ module.exports = class UserController {
 
         let currentUser
 
-        console.log(req.headers.authorization)
 
         //Local onde fica o token
         if(req.headers.authorization) {
+
+            //Decodificar o token, extrair o id e limpar a senha que vem junto ao token
+            const token = getToken(req)
+            const decoded = jwt.verify(token, 'nossosecret')
+
+            currentUser = await User.findById(decoded.id)
+
+            currentUser.password = undefined
 
         } else {
             currentUser = null 
