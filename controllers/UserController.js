@@ -36,6 +36,14 @@ module.exports = class UserController {
             res.status(422).json({ message: 'As senhas precisam ser iguais' })
             return
         }
+
+        //Checar se o usuário existe
+        const userExist = await User.findOne({email: email})
+
+        if(userExist) {
+            res.status(422).json({ message: 'Email já cadastrado!' })
+            return
+        }
     }
 
 }
