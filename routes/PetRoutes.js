@@ -20,4 +20,7 @@ router.get('/mypets', verifyToken, PetController.getAllUserPets)
 //Rota que vai exibir todos os pets que o usuário tem interesse em adotar
 router.get('/myadoptions', verifyToken, PetController.getAllUserAdoptions)
 
+//Rota para resgtar um pet pelo ID
+router.get('/:id', PetController.getPetById)
+
 module.exports = router
