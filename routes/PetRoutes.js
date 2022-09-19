@@ -14,4 +14,7 @@ router.post('/create', verifyToken, imageUpload.array('images'), PetController.c
 //Rota que vai pegar todos os pets para exibir na home do front-end
 router.get("/", PetController.getAll)
 
+//Rota que vai pegar todos os pets que um usuário cadastrados para exibir na dashboard dele
+router.get('/mypets', verifyToken, PetController.getAllUserPets)
+
 module.exports = router

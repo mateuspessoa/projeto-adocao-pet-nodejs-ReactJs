@@ -91,4 +91,18 @@ module.exports = class PetController {
         res.status(200).json({pets: pets})
     }
 
+    //Função para pegar todos os pets de um usuário para ser exibido na dashboard
+    static async getAllUserPets(req, res) {
+
+        //Pegar o usuário pelo token
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        //Pegar os pets cadastrados pelo usuário (filtrando pelo ID)
+        const pets = await Pet.find({'user._id': user._id}).sort('-createdAt')
+
+        res.status(200).json({pets})
+
+    }
+
 }
