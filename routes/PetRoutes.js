@@ -32,4 +32,7 @@ router.patch('/:id', verifyToken, imageUpload.array('image'), PetController.upda
 //Rota para agendar visita
 router.patch('/schedule/:id', verifyToken, PetController.schedule)
 
+//Rota para concluir a adoção
+router.patch('/conclude/:id', verifyToken, PetController.concludeAdoption)
+
 module.exports = router

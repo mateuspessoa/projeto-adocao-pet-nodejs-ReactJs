@@ -293,4 +293,35 @@ module.exports = class PetController {
 
     }
 
+    //Função para concluir a adoção
+    static async concludeAdoption(req, res) {
+
+        const id = req.params.id
+
+        //Checar se o pet existe
+        const pet = await Pet.findOne({_id: id})
+
+        if(!pet) {
+            res.status(404).json({ message: "Pet não encontrado" })
+            return
+        }
+
+        //Checar se o usuário logado foi quem registrou o pet
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        if(pet.user._id.toString() !== user._id.toString()) {
+            res.status(422).json({ message: "Houve um problema ao processar a sua solicitação" })
+            return
+        }
+
+        pet.available = false
+
+        await Pet.findByIdAndUpdate(id, pet)
+
+        res.status(200).json({message: "Parabéns! O ciclo de adoção foi finallizado com sucesso!"})
+
+
+    }
+
 }
