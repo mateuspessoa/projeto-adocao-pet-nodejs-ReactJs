@@ -16,8 +16,9 @@ const imageStorage = multer.diskStorage({
         cb(null, `public/images/${folder}`)
 
     },
+    //Definir um nome diferente para cada imagem
     filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname))
+        cb(null, Date.now() + String(Math.floor(Math.random() * 1000)) + path.extname(file.originalname))
     },
 })
 

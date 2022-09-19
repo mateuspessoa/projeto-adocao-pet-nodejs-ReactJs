@@ -5,7 +5,10 @@ const PetController = require('../controllers/PetController')
 //Apenas usuários autenticados poderão adicionar pets
 const verifyToken = require('../helpers/verify-token')
 
+//Upload de images
+const { imageUpload } = require('../helpers/image-upload')
 
-router.post('/create', verifyToken, PetController.create)
+
+router.post('/create', verifyToken, imageUpload.array('images'), PetController.create)
 
 module.exports = router
