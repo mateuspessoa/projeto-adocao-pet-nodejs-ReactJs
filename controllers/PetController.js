@@ -105,4 +105,18 @@ module.exports = class PetController {
 
     }
 
+    //Função para pegar todos os pets que o usuários tem interesse em adotar
+    static async getAllUserAdoptions(req, res) {
+
+        //Pegar o usuário pelo token
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        //Pegar os pets que o usuários tem interesse em adotar
+        const pets = await Pet.find({'adopter._id': user._id}).sort('-createdAt')
+
+        res.status(200).json({pets})
+
+    }
+
 }
