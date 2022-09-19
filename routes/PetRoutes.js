@@ -29,4 +29,7 @@ router.delete('/:id', verifyToken, PetController.removePetById)
 //Rota de atualização do pet
 router.patch('/:id', verifyToken, imageUpload.array('image'), PetController.updatePet)
 
+//Rota para agendar visita
+router.patch('/schedule/:id', verifyToken, PetController.schedule)
+
 module.exports = router
