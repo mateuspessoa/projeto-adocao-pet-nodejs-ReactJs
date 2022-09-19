@@ -176,4 +176,76 @@ module.exports = class PetController {
 
     }
 
+    //Função para editar um pet
+    static async updatePet(req, res) {
+
+        const id = req.params.id
+
+        const { name, age, weight, color, available } = req.body
+        
+        const images = req.files
+
+        //Onde vai ficar os dados atualizados
+        const updateData = {}
+
+        //Checar se o pet existe
+        const pet = await Pet.findOne({_id: id})
+
+        if(!pet) {
+            res.status(404).json({ message: "Pet não encontrado" })
+            return
+        }
+
+        //Checar se o usuário logado foi quem registrou o pet
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        if(pet.user._id.toString() !== user._id.toString()) {
+            res.status(422).json({ message: "Houve um problema ao processar a sua solicitação" })
+            return
+        }
+
+        if(!name) {
+            res.status(422).json({message: "O nome do pet é obrigatório"})
+            return
+        } else {
+            updateData.name = name
+        }
+
+        if(!age) {
+            res.status(422).json({message: "A idade do pet é obrigatória"})
+            return
+        } else {
+            updateData.age = age
+        }
+
+        if(!weight) {
+            res.status(422).json({message: "O peso do pet é obrigatório"})
+            return
+        } else {
+            updateData.weight = weight
+        }
+
+        if(!color) {
+            res.status(422).json({message: "A cor do pet é obrigatória"})
+            return
+        } else {
+            updateData.color = color
+        }
+
+        if(images.length === 0) {
+            res.status(422).json({message: "A imagem do pet é obrigatória"})
+            return
+        } else {
+            updateData.images = []
+            images.map((image) => {
+                updateData.images.push(image.filename)
+            })
+        }
+
+        await Pet.findByIdAndUpdate(id, updateData)
+
+        res.status(200).json({message: 'Pet atualizado com sucesso'})
+    }
+
 }

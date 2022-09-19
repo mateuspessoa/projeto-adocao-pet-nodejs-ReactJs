@@ -26,4 +26,7 @@ router.get('/:id', PetController.getPetById)
 //Rota para remover um pet
 router.delete('/:id', verifyToken, PetController.removePetById)
 
+//Rota de atualização do pet
+router.patch('/:id', verifyToken, imageUpload.array('image'), PetController.updatePet)
+
 module.exports = router
