@@ -142,4 +142,38 @@ module.exports = class PetController {
 
     }
 
+    //Função para remover um Pet cadastrado
+    static async removePetById(req, res) {
+
+        const id = req.params.id
+
+        //Checando se o ID é válido
+        if(!ObjectId.isValid(id)) {
+            res.status(422).json({ message: "O ID não é valido" })
+            return
+        }
+
+        //Checa se o pet existe
+        const pet = await Pet.findOne({_id: id})
+
+        if(!pet) {
+            res.status(404).json({ message: "Pet não encontrado" })
+            return
+        }
+
+        //Checar se o usuário logado foi quem registrou o pet
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        if(pet.user._id.toString() !== user._id.toString()) {
+            res.status(422).json({ message: "Houve um problema ao processar a sua solicitação" })
+            return
+        }
+
+        await Pet.findByIdAndRemove(id)
+
+        res.status(200).json({ message: 'Pet removido com sucesso' })
+
+    }
+
 }

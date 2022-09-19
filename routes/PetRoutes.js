@@ -23,4 +23,7 @@ router.get('/myadoptions', verifyToken, PetController.getAllUserAdoptions)
 //Rota para resgtar um pet pelo ID
 router.get('/:id', PetController.getPetById)
 
+//Rota para remover um pet
+router.delete('/:id', verifyToken, PetController.removePetById)
+
 module.exports = router
