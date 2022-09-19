@@ -11,4 +11,7 @@ const { imageUpload } = require('../helpers/image-upload')
 
 router.post('/create', verifyToken, imageUpload.array('images'), PetController.create)
 
+//Rota que vai pegar todos os pets para exibir na home do front-end
+router.get("/", PetController.getAll)
+
 module.exports = router

@@ -81,4 +81,14 @@ module.exports = class PetController {
         }
     }
 
+    
+    //Função para pegar todos os pets
+    static async getAll(req, res) {
+
+        //Pegando os pets do mais novo ao mais velho cadastrado
+        const pets = await Pet.find().sort('-createdAt')
+
+        res.status(200).json({pets: pets})
+    }
+
 }
