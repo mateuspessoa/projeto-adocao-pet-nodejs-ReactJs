@@ -82,12 +82,9 @@ module.exports = class UserController {
         const {email, password} = req.body
 
         //Validações
-        if(!email) {
-            res.status(422).json({ message: "Você não digitou um email" })
-        }
-
-        if(!password) {
-            res.status(422).json({ message: "Você não digitou a senha" })
+        if(!email || !password) {
+            res.status(422).json({ message: "Email ou senha não inseridos" })
+            return
         }
 
         //Checar se o usuário existe
